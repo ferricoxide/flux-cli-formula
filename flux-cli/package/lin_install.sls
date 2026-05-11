@@ -37,3 +37,9 @@ Extract flux CLI Archive:
     - options: --strip-components=0
     - onchanges:
       - file: 'Download flux CLI Archive-File'
+
+Remove staged flux CLI Archive-File:
+  file.absent:
+    - name: '{{ flux_archive }}'
+    - require:
+      - file: 'Enforce flux permissions and SELinux'
