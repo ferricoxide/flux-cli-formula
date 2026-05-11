@@ -40,7 +40,17 @@ Ensure Docker Service for Flux/Kind:
     - enable: True
     - require:
       - file: 'Enforce flux permissions and SELinux'
+    - require_in:
+      - file: 'Install user-env setup for Podman socket'
 {%- endif %}
+
+Ensure the directory exists for the global link:
+  file.directory:
+    - group: root
+    - makedirs: True
+    - mode: '0755'
+    - name: '/usr/lib/systemd/user/sockets.target.wants'
+    - user: root
 
 Fix permissions on bash-completion for Flux:
   file.managed:
@@ -51,6 +61,16 @@ Fix permissions on bash-completion for Flux:
     - require:
       - cmd: 'Install bash-completion for Flux'
     - user: root
+
+Force podman socket globally:
+  file.symlink:
+    - name: '/usr/lib/systemd/user/sockets.target.wants/podman.socket'
+    - target: '/usr/lib/systemd/user/podman.socket'
+    - force: True
+    - only_if:
+      - '[[ rpm -q --quiet podman ]]'
+    - require:
+      - file: 'Ensure the directory exists for the global link'
 
 Install bash-completion for Flux:
   cmd.run:
