@@ -19,6 +19,8 @@ Ensure Podman Socket for Kind:
     - comment: "Podman detected; enabling socket for Flux/Kind compatibility."
     - require:
       - file: 'Enforce flux permissions and SELinux'
+    - require_in:
+      - file: 'Install user-env setup for Podman socket'
 {%- endif %}
 
 {%- if 'docker-ce' in installed_pkgs or 'docker' in installed_pkgs %}
@@ -47,3 +49,18 @@ Install bash-completion for Flux:
       - archive: 'Extract flux CLI Archive'
     - require:
       - file: 'Enforce flux permissions and SELinux'
+
+Install user-env setup for Podman socket:
+  file.managed:
+    - contents: |
+        # Ensure Flux can talk to the Podman socket by default
+        if [[ -S /run/podman/podman.sock ]]
+        then
+          export DOCKER_HOST="unix:///run/podman/podman.sock"
+        fi
+    - group: root
+    - mode: '0644'
+    - name: '/etc/profile.d/flux_env.sh'
+    - only_if:
+      - [[ -S /run/podman/podman.sock ]]
+    - user: root
