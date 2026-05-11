@@ -44,6 +44,19 @@ Ensure Docker Service for Flux/Kind:
       - file: 'Install user-env setup for Podman socket'
 {%- endif %}
 
+Ensure systemd user delegation for Kind:
+  file.managed:
+    - contents: |
+        [Service]
+        Delegate=yes
+    - group: root
+    - makedirs: True
+    - mode: '0644'
+    - name: '/etc/systemd/system/user@.service.d/delegate.conf'
+    - only_if:
+      - '[[ -f /usr/local/bin/kind || -f /usr/bin/kind ]]'
+    - user: root
+
 Ensure the directory exists for the global link:
   file.directory:
     - group: root
@@ -97,3 +110,9 @@ Install user-env setup for Podman socket:
     - only_if:
       - [[ -S /run/podman/podman.sock ]]
     - user: root
+
+Reload systemd for delegation:
+  module.run:
+    - service.systemctl_reload: {}
+    - onchanges:
+        - file: Ensure systemd user delegation for Kind
