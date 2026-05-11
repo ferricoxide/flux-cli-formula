@@ -1,0 +1,18 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+#
+# Set default values.
+---
+values:
+  pkg:
+    name: flux-cli
+  rootgroup: root
+  config: '/etc/flux-cli'
+  service:
+    name: flux-cli
+  subcomponent:
+    config: '/etc/flux-cli-subcomponent-formula.conf'
+  # Just here for testing
+  added_in_defaults: defaults_value
+  winner: defaults
+...

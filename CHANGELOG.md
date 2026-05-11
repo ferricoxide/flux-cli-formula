@@ -1,4 +1,4 @@
-## flux-cd-formula
+## flux-cli-formula
 
 All notable changes to this project will be documented in this file.
 
