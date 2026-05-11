@@ -21,6 +21,17 @@ Enable podman socket for all future users:
       - '[[ rpm -q --quiet podman ]]'
     - user: root
 
+{%- if 'docker-ce' in installed_pkgs or 'docker' in installed_pkgs %}
+Ensure Docker Service for Flux/Kind:
+  service.running:
+    - name: 'docker'
+    - enable: True
+    - require:
+      - file: 'Enforce flux permissions and SELinux'
+    - require_in:
+      - file: 'Install user-env setup for Podman socket'
+{%- endif %}
+
 {%- if 'podman' in installed_pkgs %}
 Ensure Podman Socket for Kind:
   service.running:
@@ -33,16 +44,11 @@ Ensure Podman Socket for Kind:
       - file: 'Install user-env setup for Podman socket'
 {%- endif %}
 
-{%- if 'docker-ce' in installed_pkgs or 'docker' in installed_pkgs %}
-Ensure Docker Service for Flux/Kind:
-  service.running:
-    - name: 'docker'
-    - enable: True
+Ensure bash-completion package is present:
+  pkg.installed:
+    - name: bash-completion
     - require:
       - file: 'Enforce flux permissions and SELinux'
-    - require_in:
-      - file: 'Install user-env setup for Podman socket'
-{%- endif %}
 
 Ensure systemd user delegation for Kind:
   file.managed:
@@ -56,12 +62,6 @@ Ensure systemd user delegation for Kind:
     - only_if:
       - '[[ -f /usr/local/bin/kind || -f /usr/bin/kind ]]'
     - user: root
-
-Ensure bash-completion package is present:
-  pkg.installed:
-    - name: bash-completion
-    - require:
-      - file: 'Enforce flux permissions and SELinux'
 
 Ensure the directory exists for the global link:
   file.directory:
@@ -97,7 +97,7 @@ Install bash-completion for Flux:
     - onchanges:
       - archive: 'Extract flux CLI Archive'
     - require:
-      - file: 'Ensure bash-completion package is present'
+      - pkg: 'Ensure bash-completion package is present'
 
 Install user-env setup for Podman socket:
   file.managed:
