@@ -11,6 +11,16 @@
 include:
   - {{ sls_package_install }}
 
+Enable podman socket for all future users:
+  file.managed:
+    - contents: "enable podman.socket"
+    - group: root
+    - mode: '0644'
+    - name: '/usr/lib/systemd/user-preset/80-podman.preset'
+    - only_if:
+      - '[[ rpm -q --quiet podman ]]'
+    - user: root
+
 {%- if 'podman' in installed_pkgs %}
 Ensure Podman Socket for Kind:
   service.running:
@@ -53,9 +63,12 @@ Install bash-completion for Flux:
 Install user-env setup for Podman socket:
   file.managed:
     - contents: |
-        # Ensure Flux can talk to the Podman socket by default
-        if [[ -S /run/podman/podman.sock ]]
+        # Use rootless socket if available
+        if [[ -S "${XDG_RUNTIME_DIR}/podman/podman.sock" ]]
         then
+          export DOCKER_HOST="unix://${XDG_RUNTIME_DIR}/podman/podman.sock"
+        # Fall back to system socket if the user has permissions
+        elif [[ -w "/run/podman/podman.sock" ]]; then
           export DOCKER_HOST="unix:///run/podman/podman.sock"
         fi
     - group: root
