@@ -8,7 +8,7 @@
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 
 include:
-  - {{ sls_package_install }}}
+  - {{ sls_package_install }}
 {%- if grains.kernel == "Linux" %}
   - flux-cli.config.lin_file
 {%- elif grains.kernel == "Windows" %}
