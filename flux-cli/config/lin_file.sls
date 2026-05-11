@@ -50,6 +50,13 @@ Ensure bash-completion package is present:
     - require:
       - file: 'Enforce flux permissions and SELinux'
 
+Ensure kubeconfig directory for all users:
+  file.directory:
+    - name: '/etc/skel/.kube'
+    - user: root
+    - group: root
+    - mode: '0755'
+
 Ensure systemd user delegation for Kind:
   file.managed:
     - contents: |
