@@ -57,6 +57,12 @@ Ensure systemd user delegation for Kind:
       - '[[ -f /usr/local/bin/kind || -f /usr/bin/kind ]]'
     - user: root
 
+Ensure bash-completion package is present:
+  pkg.installed:
+    - name: bash-completion
+    - require:
+      - file: 'Enforce flux permissions and SELinux'
+
 Ensure the directory exists for the global link:
   file.directory:
     - group: root
@@ -91,7 +97,7 @@ Install bash-completion for Flux:
     - onchanges:
       - archive: 'Extract flux CLI Archive'
     - require:
-      - file: 'Enforce flux permissions and SELinux'
+      - file: 'Ensure bash-completion package is present'
 
 Install user-env setup for Podman socket:
   file.managed:
