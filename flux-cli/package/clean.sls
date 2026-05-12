@@ -9,8 +9,10 @@
 include:
   - {{ sls_config_clean }}
 
-flux-cli-package-clean-pkg-removed:
-  pkg.removed:
-    - name: {{ flux_cli.pkg.name }}
-    - require:
-      - sls: {{ sls_config_clean }}
+include:
+{%- if grains.kernel == "Linux" %}
+  - flux-cli.package.lin_clean
+{%- elif grains.kernel == "Windows" %}
+  - flux-cli.package.win_clean
+{%- endif %}
+
