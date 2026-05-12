@@ -1,20 +1,20 @@
 flux-cli:
   values:
     pkg:
-      name: flux-cli     # (Reserved for future use)
-      download_uri: ''   # (Recommended): URI from which to download the
-                         #   architecture-appropriate archive-file. If left
-                         #   undefined or unpopulated, formula will attempt to
-                         #   download the latest-available binary-archive from
-                         #   the flux-cd GitHub project located at:
-                         #
-                         #      https://github.com/fluxcd/flux2/releases
-                         #
-      download_sig: ''   # (Conditional): URI from which to download the
-                         #   signature-file corresponding to the file downloaded
-                         #   via the 'download_uri' URI. If using a
-                         #   privately-hosted archive-file, it will be necessary
-                         #   to create and host a signature-file with which to
-                         #   verify the downloaded archive-file. This parameter
-                         #   tells the automation where to download the
-                         #   signature-file from
+      name: flux-cli      # (Reserved for future use)
+      download_uri: ''    # (Recommended): URI from which to download the
+                          #   architecture-appropriate archive-file. If left
+                          #   undefined or unpopulated, formula will attempt to
+                          #   download the latest-available binary-archive from
+                          #   the flux-cd GitHub project located at:
+                          #
+                          #      https://github.com/fluxcd/flux2/releases
+                          #
+      download_sig: ''    # (Conditional): URI from which to download the
+                          #   signature-file corresponding to the file downloaded
+                          #   via the 'download_uri' URI. If using a
+                          #   privately-hosted archive-file, it will be necessary
+                          #   to create and host a signature-file with which to
+                          #   verify the downloaded archive-file. This parameter
+                          #   tells the automation where to download the
+                          #   signature-file from
