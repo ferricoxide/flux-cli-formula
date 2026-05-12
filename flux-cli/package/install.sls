@@ -5,6 +5,10 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import mapdata as flux_cli with context %}
 
-flux-cli-package-install-pkg-installed:
-  pkg.installed:
-    - name: {{ flux_cli.pkg.name }}
+include:
+{%- if grains.kernel == "Linux" %}
+  - flux-cli.package.lin_install
+{%- elif grains.kernel == "Windows" %}
+  - flux-cli.package.win_install
+{%- endif %}
+

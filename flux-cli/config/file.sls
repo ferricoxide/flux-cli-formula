@@ -9,20 +9,10 @@
 
 include:
   - {{ sls_package_install }}
+{%- if grains.kernel == "Linux" %}
+  - flux-cli.config.lin_file
+{%- elif grains.kernel == "Windows" %}
+  - flux-cli.config.win_file
+{%- endif %}
 
-flux-cli-config-file-file-managed:
-  file.managed:
-    - name: {{ flux_cli.config }}
-    - source: {{ files_switch(['example.tmpl'],
-                              lookup='flux-cli-config-file-file-managed'
-                 )
-              }}
-    - mode: 644
-    - user: root
-    - group: {{ flux_cli.rootgroup }}
-    - makedirs: True
-    - template: jinja
-    - require:
-      - sls: {{ sls_package_install }}
-    - context:
-        flux_cli: {{ flux_cli | json }}
+
