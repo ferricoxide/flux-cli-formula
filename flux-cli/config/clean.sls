@@ -7,7 +7,6 @@
 {%- from tplroot ~ "/map.jinja" import mapdata as flux_cli with context %}
 
 include:
-  - {{ sls_package_install }}
 {%- if grains.kernel == "Linux" %}
   - flux-cli.config.lin_clean
 {%- elif grains.kernel == "Windows" %}

@@ -8,8 +8,6 @@
 
 include:
   - {{ sls_config_clean }}
-
-include:
 {%- if grains.kernel == "Linux" %}
   - flux-cli.package.lin_clean
 {%- elif grains.kernel == "Windows" %}
