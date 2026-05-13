@@ -12,6 +12,13 @@
 include:
   - {{ sls_package_install }}
 
+Ensure Default User kubeconfig directory exists:
+  file.directory:
+    - makedirs: True
+    - name: 'C:\Users\Default\.kube'
+    - require:
+      - sls: {{ sls_package_install }}
+
 Ensure Flux CLI Autocompletion in Global (default) Windows PowerShell Profile:
   file.blockreplace:
     - append_if_not_found: True
