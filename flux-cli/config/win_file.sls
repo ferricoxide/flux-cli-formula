@@ -26,12 +26,16 @@ Ensure Flux CLI Autocompletion in Global (default) Windows PowerShell Profile:
         if (Test-Path "{{ install_dir }}flux-completion.ps1") {
             . "{{ install_dir }}flux-completion.ps1"
         }
+        if (Test-Path "{{ install_dir }}flux-env.ps1") {
+            . "{{ install_dir }}flux-env.ps1"
+        }
     - marker_end: '# --- END FLUX CLI AUTOLOAD ---'
     - marker_start: '# --- START FLUX CLI AUTOLOAD ---'
     - name: 'C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1'
     - require:
       - file: 'Ensure Global (default) Windows PowerShell Profile Exists'
       - cmd: 'Generate Flux CLI PowerShell Autocompletion'
+      - file: 'Install user-env setup for Windows container runtimes'
 
 Ensure Flux CLI Autocompletion in Global PowerShell 7 Profile:
   file.blockreplace:
@@ -39,6 +43,9 @@ Ensure Flux CLI Autocompletion in Global PowerShell 7 Profile:
     - content: |
         if (Test-Path "{{ install_dir }}flux-completion.ps1") {
             . "{{ install_dir }}flux-completion.ps1"
+        }
+        if (Test-Path "{{ install_dir }}flux-env.ps1") {
+            . "{{ install_dir }}flux-env.ps1"
         }
     - marker_end: '# --- END FLUX CLI AUTOLOAD ---'
     - marker_start: '# --- START FLUX CLI AUTOLOAD ---'
@@ -49,6 +56,7 @@ Ensure Flux CLI Autocompletion in Global PowerShell 7 Profile:
     - require:
       - file: 'Ensure Global PowerShell 7 Profile Exists'
       - cmd: 'Generate Flux CLI PowerShell Autocompletion'
+      - file: 'Install user-env setup for Windows container runtimes'
 
 Ensure Global (default) Windows PowerShell Profile Exists:
   file.managed:
@@ -72,3 +80,16 @@ Generate Flux CLI PowerShell Autocompletion:
     - onchanges:
       - archive: 'Extract Flux CLI from Archive-File'
     - shell: powershell
+
+Install user-env setup for Windows container runtimes:
+  file.managed:
+    - name: '{{ install_dir }}flux-env.ps1'
+    - contents: |
+        # Ensure Flux and Kind can locate the correct container socket on Windows
+        if (Get-Command podman -ErrorAction SilentlyContinue) {
+            $env:DOCKER_HOST = "npipe:////./pipe/podman-machine-default"
+        } elseif (Get-Command docker -ErrorAction SilentlyContinue) {
+            $env:DOCKER_HOST = "npipe:////./pipe/docker_engine"
+        }
+    - require:
+      - sls: {{ sls_package_install }}
