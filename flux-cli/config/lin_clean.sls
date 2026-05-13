@@ -12,10 +12,6 @@ Remove bash-completion file for Flux:
   file.absent:
     - name: '/etc/bash_completion.d/flux'
 
-Remove kubeconfig directory for all users:
-  file.absent:
-    - name: '/etc/skel/.kube'
-
 Remove shell-ENVs for Flux:
   file.absent:
     - name: '/etc/profile.d/flux_env.sh'
