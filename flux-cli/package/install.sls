@@ -12,3 +12,5 @@ include:
   - flux-cli.package.win_install
 {%- endif %}
 
+Avoid being a null-router (package/install):
+  test.nop: []

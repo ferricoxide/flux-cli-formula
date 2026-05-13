@@ -12,3 +12,5 @@ include:
   - flux-cli.config.win_clean
 {%- endif %}
 
+Avoid being a null-router (config/clean):
+  test.nop: []
