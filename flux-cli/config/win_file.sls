@@ -14,30 +14,30 @@ include:
 
 Ensure Flux CLI Autocompletion in Global (default) Windows PowerShell Profile:
   file.blockreplace:
-    - name: 'C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1'
-    - marker_start: '# --- START FLUX CLI AUTOLOAD ---'
-    - marker_end: '# --- END FLUX CLI AUTOLOAD ---'
+    - append_if_not_found: True
     - content: |
         if (Test-Path "{{ install_dir }}flux-completion.ps1") {
             . "{{ install_dir }}flux-completion.ps1"
         }
-    - append_if_not_found: True
+    - marker_end: '# --- END FLUX CLI AUTOLOAD ---'
+    - marker_start: '# --- START FLUX CLI AUTOLOAD ---'
+    - name: 'C:\Windows\System32\WindowsPowerShell\v1.0\profile.ps1'
     - require:
       - file: 'Ensure Global (default) Windows PowerShell Profile Exists'
       - cmd: 'Generate Flux CLI PowerShell Autocompletion'
 
 Ensure Flux CLI Autocompletion in Global PowerShell 7 Profile:
   file.blockreplace:
-    - name: 'C:\Program Files\PowerShell\7\profile.ps1'
-    - marker_start: '# --- START FLUX CLI AUTOLOAD ---'
-    - marker_end: '# --- END FLUX CLI AUTOLOAD ---'
+    - append_if_not_found: True
     - content: |
         if (Test-Path "{{ install_dir }}flux-completion.ps1") {
             . "{{ install_dir }}flux-completion.ps1"
         }
-    - append_if_not_found: True
+    - marker_end: '# --- END FLUX CLI AUTOLOAD ---'
+    - marker_start: '# --- START FLUX CLI AUTOLOAD ---'
+    - name: 'C:\Program Files\PowerShell\7\profile.ps1'
     - onlyif:
-      - cmd: 'Test-Path "C:\Program Files\PowerShell\7"'
+      - 'Test-Path "C:\Program Files\PowerShell\7"'
       - shell: powershell
     - require:
       - file: 'Ensure Global PowerShell 7 Profile Exists'
@@ -51,10 +51,10 @@ Ensure Global (default) Windows PowerShell Profile Exists:
 Ensure Global PowerShell 7 Profile Exists:
   file.managed:
     - name: 'C:\Program Files\PowerShell\7\profile.ps1'
-    - replace: False
     - onlyif:
-      - cmd: 'Test-Path "C:\Program Files\PowerShell\7"'
+      - 'Test-Path "C:\Program Files\PowerShell\7"'
       - shell: powershell
+    - replace: False
 
 Generate Flux CLI PowerShell Autocompletion:
   cmd.run:
@@ -62,6 +62,6 @@ Generate Flux CLI PowerShell Autocompletion:
         & "{{ install_dir }}flux.exe" completion powershell |
         Out-File -FilePath "{{ install_dir }}flux-completion.ps1"
         -Encoding UTF8
-    - shell: powershell
     - onchanges:
       - archive: 'Extract Flux CLI from Archive-File'
+    - shell: powershell
