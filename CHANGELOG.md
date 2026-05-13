@@ -4,6 +4,16 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.1.1
+
+**Released**: 2026.05.13
+
+**Summary**:
+
+*   Adds setup-capability for Windows-based onfiguration-targets (tested with Windows Server 2022)
+*   Adds Windows-related CI features to project
+*   Add conditional, VERY basic integration-steps for Podman and Docker
+
 ### 0.1.0
 
 **Released**: 2026.05.12
