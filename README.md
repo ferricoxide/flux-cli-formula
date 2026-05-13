@@ -5,7 +5,12 @@ A SaltStack formula designed to install and configure the [Flux](https://fluxcd.
 
 It is primarily expected that this formula will be run via [P3](https://www.plus3it.com/)'s "[watchmaker](https://watchmaker.readthedocs.io/en/stable/)" framework.
 
-This formula is able to install the Flux CLI on both Linux[^1] and Windows Server[^2] operating environments. Intallation for internet-connected systems will come from the Flux CLI project's ["releases" page](https://github.com/fluxcd/flux2/releases).
+This formula is able to install the Flux CLI on both Linux[^1] and Windows Server[^2] operating environments. Intallation for internet-connected systems may come from the Flux CLI project's ["releases" page](https://github.com/fluxcd/flux2/releases). If installing this way, the formula will install the latest-available version of the content. Alternately:
+
+* Sites whose installation-targets won't be able to reach the Flux CLI project's GitHub repository will need to self-host copies of the desired content.
+* Sites that wish to use a specific version of the Flux CLI will need to target that content
+
+Targeting specific versions of the FluX CLI or local copies of the install-archives can be directed to do so by adding appropriate content to the formula's associated Pillar-data (see thish projct's [pillar.example](pillar.example) file for guidance).
 
 
 ## Available states

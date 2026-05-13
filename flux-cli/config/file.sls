@@ -15,4 +15,5 @@ include:
   - flux-cli.config.win_file
 {%- endif %}
 
-
+Avoid being a null-router (config/file):
+  test.nop: []

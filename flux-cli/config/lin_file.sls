@@ -27,7 +27,7 @@ Ensure Docker Service for Flux/Kind:
     - name: 'docker'
     - enable: True
     - require:
-      - file: 'Enforce flux permissions and SELinux'
+      - sls: {{ sls_package_install }}
     - require_in:
       - file: 'Install user-env setup for Podman socket'
 {%- endif %}
@@ -39,7 +39,7 @@ Ensure Podman Socket for Kind:
     - enable: True
     - comment: "Podman detected; enabling socket for Flux/Kind compatibility."
     - require:
-      - file: 'Enforce flux permissions and SELinux'
+      - sls: {{ sls_package_install }}
     - require_in:
       - file: 'Install user-env setup for Podman socket'
 {%- endif %}
@@ -48,7 +48,7 @@ Ensure bash-completion package is present:
   pkg.installed:
     - name: bash-completion
     - require:
-      - file: 'Enforce flux permissions and SELinux'
+      - sls: {{ sls_package_install }}
 
 Ensure kubeconfig directory for all users:
   file.directory:

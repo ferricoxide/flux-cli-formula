@@ -14,3 +14,5 @@ include:
   - flux-cli.package.win_clean
 {%- endif %}
 
+Avoid being a null-router (package/clean):
+  test.nop: []
