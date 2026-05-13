@@ -78,7 +78,7 @@ Generate Flux CLI PowerShell Autocompletion:
         Out-File -FilePath "{{ install_dir }}flux-completion.ps1"
         -Encoding UTF8
     - onchanges:
-      - archive: 'Extract Flux CLI from Archive-File'
+      - archive: 'Extract flux CLI Archive'
     - shell: powershell
 
 Install user-env setup for Windows container runtimes:

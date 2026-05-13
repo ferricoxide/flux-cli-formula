@@ -37,7 +37,7 @@ Download flux CLI Archive-File:
   file.managed:
     - name: '{{ flux_archive }}'
     - onchanges_in:
-      - archive: 'Extract Flux CLI from Archive-File'
+      - archive: 'Extract flux CLI Archive'
     - skip_verify: True
     - source: '{{ flux_cli.pkg.download_uri }}'
 {%- else %}
@@ -55,13 +55,13 @@ Download flux CLI Archive-File:
   cmd.run:
     - name: 'curl -sSLf -o {{ flux_archive }} {{ download_uri }}'
     - onchanges_in:
-      - archive: 'Extract Flux CLI from Archive-File'
+      - archive: 'Extract flux CLI Archive'
     - require:
       - test: 'Announce Fall-back'
     - unless: 'test -s {{ flux_archive }}'
 {%- endif %}
 
-Extract Flux CLI from Archive-File:
+Extract flux CLI Archive:
   archive.extracted:
     - enforce_toplevel: False
     - name: '{{ install_dir }}'
@@ -72,10 +72,10 @@ Ensure Flux CLI is in PATH:
   win_path.exists:
     - name: '{{ install_dir }}'
     - require:
-      - archive: 'Extract Flux CLI from Archive-File'
+      - archive: 'Extract flux CLI Archive'
 
 Remove staged flux CLI Archive-File:
   file.absent:
     - name: '{{ flux_archive }}'
     - require:
-      - archive: 'Extract Flux CLI from Archive-File'
+      - archive: 'Extract flux CLI Archive'
